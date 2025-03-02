@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Products</h1>
+
+    <table>
+        <tr>
+            <th><a href="{{ path('product_list', {sort: 'title', direction: app.request.get('direction') == 'asc' ? 'desc' : 'asc'}) }}">Title</a></th>
+            <th><a href="{{ path('product_list', {sort: 'price', direction: app.request.get('direction') == 'asc' ? 'desc' : 'asc'}) }}">Price</a></th>
+        </tr>
+        {% for product in products %}
+            <tr>
+                <td><a href="{{ path('product_detail', {'id': product.id}) }}">{{ product.title }}</a></td>
+                <td>{{ product.price }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {# Pagination links #}
+    <div class="pagination">
+        {{ knp_pagination_render(products) }}
+    </div>
+{% endblock %}
