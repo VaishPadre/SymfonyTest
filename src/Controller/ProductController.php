@@ -16,28 +16,21 @@ use Knp\Component\Pager\PaginatorInterface;
 #[Route('/product')]
 final class ProductController extends AbstractController
 {
-    // ✅ Fixed: Added "/" to define a proper path for the index route
     #[Route('/', name: 'app_product_index', methods: ['GET'])]
 
     public function index(ProductRepository $productRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $query = $productRepository->createQueryBuilder('p')->getQuery();
         $pagination = $paginator->paginate(
-            $query, // Query (not an array)
-            $request->query->getInt('page', 1), // Current page, default 1
-            10 // Items per page
+            $query,
+            $request->query->getInt('page', 1), 
+            10 
         );
 
         return $this->render('product/index.html.twig', [
             'pagination' => $pagination,
         ]);
     }
-    // public function index(ProductRepository $productRepository): Response
-    // {
-    //     return $this->render('product/index.html.twig', [
-    //         'products' => $productRepository->findAll(),
-    //     ]);
-    // }
 
     #[Route('/new', name: 'app_product_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -96,13 +89,6 @@ final class ProductController extends AbstractController
         return $this->redirectToRoute('app_product_index');
     }
 
-    // #[Route('/list', name: 'product_list')]
-    // public function list(ProductRepository $repository): Response
-    // {
-    //     $products = $repository->findAll();
-    //     return $this->render('product/list.html.twig', ['products' => $products]);
-    // }
-
     #[Route('/products', name: 'product_list')]
     public function list(ProductRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -116,20 +102,6 @@ final class ProductController extends AbstractController
             'products' => $products,
         ]);
     }
-
-    // #[Route('/products', name: 'product_list')]
-    // public function list(ProductRepository $repository, PaginatorInterface $paginator, Request $request): Response
-    // {
-    //     $page = $request->query->getInt('page', 1);
-    //     $sortField = $request->query->get('sort', 'title');
-    //     $sortDirection = $request->query->get('direction', 'asc');
-
-    //     $products = $repository->getPaginatedProducts($paginator, $page, $sortField, $sortDirection);
-
-    //     return $this->render('product/list.html.twig', [
-    //         'products' => $products,
-    //     ]);
-    // }
 
     #[Route('/detail/{id}', name: 'product_detail')]
     public function detail(Product $product): Response

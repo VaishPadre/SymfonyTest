@@ -28,8 +28,6 @@ class Product
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $image = null;
 
-    // ✅ Getters and Setters
-
     public function getId(): ?int
     {
         return $this->id ?? null;
